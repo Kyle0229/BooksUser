@@ -1,7 +1,7 @@
 
 spring:
   application:
-    name: test-client1
+    name: user
 eureka:
   client:
     serviceUrl:
