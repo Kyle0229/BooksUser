@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kyle.mapper.BookMapper" >
+  <resultMap id="BaseResultMap" type="com.kyle.pojo.Book" >
+    <id column="bid" property="bid" jdbcType="INTEGER" />
+    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="aid" property="aid" jdbcType="INTEGER" />
+    <result column="bname" property="bname" jdbcType="VARCHAR" />
+    <result column="introduce" property="introduce" jdbcType="VARCHAR" />
+    <result column="nummoney" property="nummoney" jdbcType="DECIMAL" />
+    <result column="scount" property="scount" jdbcType="INTEGER" />
+    <result column="bpic" property="bpic" jdbcType="VARCHAR" />
+    <result column="bprice" property="bprice" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    bid, cid, aid, bname, introduce, nummoney, scount, bpic, bprice
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from book
+    where bid = #{bid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from book
+    where bid = #{bid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.kyle.pojo.Book" >
+    insert into book (bid, cid, aid, 
+      bname, introduce, nummoney, 
+      scount, bpic, bprice
+      )
+    values (#{bid,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, #{aid,jdbcType=INTEGER}, 
+      #{bname,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, #{nummoney,jdbcType=DECIMAL}, 
+      #{scount,jdbcType=INTEGER}, #{bpic,jdbcType=VARCHAR}, #{bprice,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kyle.pojo.Book" >
+    insert into book
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bid != null" >
+        bid,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="aid != null" >
+        aid,
+      </if>
+      <if test="bname != null" >
+        bname,
+      </if>
+      <if test="introduce != null" >
+        introduce,
+      </if>
+      <if test="nummoney != null" >
+        nummoney,
+      </if>
+      <if test="scount != null" >
+        scount,
+      </if>
+      <if test="bpic != null" >
+        bpic,
+      </if>
+      <if test="bprice != null" >
+        bprice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bid != null" >
+        #{bid,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="aid != null" >
+        #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="bname != null" >
+        #{bname,jdbcType=VARCHAR},
+      </if>
+      <if test="introduce != null" >
+        #{introduce,jdbcType=VARCHAR},
+      </if>
+      <if test="nummoney != null" >
+        #{nummoney,jdbcType=DECIMAL},
+      </if>
+      <if test="scount != null" >
+        #{scount,jdbcType=INTEGER},
+      </if>
+      <if test="bpic != null" >
+        #{bpic,jdbcType=VARCHAR},
+      </if>
+      <if test="bprice != null" >
+        #{bprice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kyle.pojo.Book" >
+    update book
+    <set >
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="aid != null" >
+        aid = #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="bname != null" >
+        bname = #{bname,jdbcType=VARCHAR},
+      </if>
+      <if test="introduce != null" >
+        introduce = #{introduce,jdbcType=VARCHAR},
+      </if>
+      <if test="nummoney != null" >
+        nummoney = #{nummoney,jdbcType=DECIMAL},
+      </if>
+      <if test="scount != null" >
+        scount = #{scount,jdbcType=INTEGER},
+      </if>
+      <if test="bpic != null" >
+        bpic = #{bpic,jdbcType=VARCHAR},
+      </if>
+      <if test="bprice != null" >
+        bprice = #{bprice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where bid = #{bid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kyle.pojo.Book" >
+    update book
+    set cid = #{cid,jdbcType=INTEGER},
+      aid = #{aid,jdbcType=INTEGER},
+      bname = #{bname,jdbcType=VARCHAR},
+      introduce = #{introduce,jdbcType=VARCHAR},
+      nummoney = #{nummoney,jdbcType=DECIMAL},
+      scount = #{scount,jdbcType=INTEGER},
+      bpic = #{bpic,jdbcType=VARCHAR},
+      bprice = #{bprice,jdbcType=DECIMAL}
+    where bid = #{bid,jdbcType=INTEGER}
+  </update>
+</mapper>

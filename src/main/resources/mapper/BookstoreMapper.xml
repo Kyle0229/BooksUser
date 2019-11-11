@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kyle.mapper.BookstoreMapper" >
+  <resultMap id="BaseResultMap" type="com.kyle.pojo.Bookstore" >
+    <id column="bsid" property="bsid" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="bid" property="bid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    bsid, uid, bid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bookstore
+    where bsid = #{bsid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bookstore
+    where bsid = #{bsid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.kyle.pojo.Bookstore" >
+    insert into bookstore (bsid, uid, bid
+      )
+    values (#{bsid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{bid,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kyle.pojo.Bookstore" >
+    insert into bookstore
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bsid != null" >
+        bsid,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="bid != null" >
+        bid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bsid != null" >
+        #{bsid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="bid != null" >
+        #{bid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kyle.pojo.Bookstore" >
+    update bookstore
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="bid != null" >
+        bid = #{bid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where bsid = #{bsid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kyle.pojo.Bookstore" >
+    update bookstore
+    set uid = #{uid,jdbcType=INTEGER},
+      bid = #{bid,jdbcType=INTEGER}
+    where bsid = #{bsid,jdbcType=INTEGER}
+  </update>
+</mapper>

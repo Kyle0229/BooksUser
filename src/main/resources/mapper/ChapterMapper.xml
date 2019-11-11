@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kyle.mapper.ChapterMapper" >
+  <resultMap id="BaseResultMap" type="com.kyle.pojo.Chapter" >
+    <id column="chid" property="chid" jdbcType="INTEGER" />
+    <result column="bid" property="bid" jdbcType="INTEGER" />
+    <result column="chnane" property="chnane" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.kyle.pojo.Chapter" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    chid, bid, chnane, number
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from chapter
+    where chid = #{chid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from chapter
+    where chid = #{chid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.kyle.pojo.Chapter" >
+    insert into chapter (chid, bid, chnane, 
+      number, content)
+    values (#{chid,jdbcType=INTEGER}, #{bid,jdbcType=INTEGER}, #{chnane,jdbcType=VARCHAR}, 
+      #{number,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kyle.pojo.Chapter" >
+    insert into chapter
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="chid != null" >
+        chid,
+      </if>
+      <if test="bid != null" >
+        bid,
+      </if>
+      <if test="chnane != null" >
+        chnane,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="chid != null" >
+        #{chid,jdbcType=INTEGER},
+      </if>
+      <if test="bid != null" >
+        #{bid,jdbcType=INTEGER},
+      </if>
+      <if test="chnane != null" >
+        #{chnane,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kyle.pojo.Chapter" >
+    update chapter
+    <set >
+      <if test="bid != null" >
+        bid = #{bid,jdbcType=INTEGER},
+      </if>
+      <if test="chnane != null" >
+        chnane = #{chnane,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where chid = #{chid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.kyle.pojo.Chapter" >
+    update chapter
+    set bid = #{bid,jdbcType=INTEGER},
+      chnane = #{chnane,jdbcType=VARCHAR},
+      number = #{number,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where chid = #{chid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kyle.pojo.Chapter" >
+    update chapter
+    set bid = #{bid,jdbcType=INTEGER},
+      chnane = #{chnane,jdbcType=VARCHAR},
+      number = #{number,jdbcType=INTEGER}
+    where chid = #{chid,jdbcType=INTEGER}
+  </update>
+</mapper>
