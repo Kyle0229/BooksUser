@@ -1,7 +1,9 @@
 package com.kyle.mapper;
 
 import com.kyle.pojo.Author;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface AuthorMapper {
     int deleteByPrimaryKey(Integer aid);
 
@@ -14,4 +16,6 @@ public interface AuthorMapper {
     int updateByPrimaryKeySelective(Author record);
 
     int updateByPrimaryKey(Author record);
+
+    Author findBookAuthor(Integer aid);
 }

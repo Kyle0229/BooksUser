@@ -15,6 +15,7 @@
     <result column="uface" property="uface" jdbcType="VARCHAR" />
     <result column="uticket" property="uticket" jdbcType="INTEGER" />
     <result column="ucoin" property="ucoin" jdbcType="DECIMAL" />
+    <result column="uvipdate" property="uvipdate"  />
   </resultMap>
   <sql id="Base_Column_List" >
     uid, bsid, uname, uphone, uemail, ustatus, uvip, ugender, upassword, upic, uface, 

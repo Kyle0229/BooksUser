@@ -1,7 +1,9 @@
 package com.kyle.mapper;
 
 import com.kyle.pojo.Catalog;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface CatalogMapper {
     int deleteByPrimaryKey(Integer cid);
 

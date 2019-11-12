@@ -1,8 +1,15 @@
 package com.kyle.pojo;
 
-import java.io.Serializable;
+import lombok.Data;
 
+import javax.persistence.*;
+import java.io.Serializable;
+@Data
+@Entity
+@Table(name = "bookstore")
 public class Bookstore implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer bsid;
 
     private Integer uid;

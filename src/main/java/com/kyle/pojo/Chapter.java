@@ -1,8 +1,15 @@
 package com.kyle.pojo;
 
-import java.io.Serializable;
+import lombok.Data;
 
+import javax.persistence.*;
+import java.io.Serializable;
+@Data
+@Entity
+@Table(name = "chapter")
 public class Chapter implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer chid;
 
     private Integer bid;

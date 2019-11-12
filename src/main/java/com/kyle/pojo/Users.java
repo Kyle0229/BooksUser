@@ -1,9 +1,13 @@
 package com.kyle.pojo;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
 @Data
 @Entity
 @Table(name = "users")
@@ -34,7 +38,9 @@ public class Users implements Serializable {
 
     private Integer uticket;
 
-    private Long ucoin;
+    private BigDecimal ucoin;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date uvipdate;
 
     private static final long serialVersionUID = 1L;
 
@@ -134,11 +140,11 @@ public class Users implements Serializable {
         this.uticket = uticket;
     }
 
-    public Long getUcoin() {
+    public BigDecimal getUcoin() {
         return ucoin;
     }
 
-    public void setUcoin(Long ucoin) {
+    public void setUcoin(BigDecimal ucoin) {
         this.ucoin = ucoin;
     }
 }

@@ -9,6 +9,7 @@
     <result column="introduce" property="introduce" jdbcType="VARCHAR" />
     <result column="nummoney" property="nummoney" jdbcType="DECIMAL" />
     <result column="scount" property="scount" jdbcType="INTEGER" />
+    <result column="btickets" property="btickets" jdbcType="INTEGER" />
     <result column="bpic" property="bpic" jdbcType="VARCHAR" />
     <result column="bprice" property="bprice" jdbcType="DECIMAL" />
   </resultMap>
@@ -138,4 +139,24 @@
       bprice = #{bprice,jdbcType=DECIMAL}
     where bid = #{bid,jdbcType=INTEGER}
   </update>
+  
+  <select id="findScount" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from book order by scount desc
+  </select>
+
+  <select id="findNumMoney" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from book order by nummoney desc
+  </select>
+  
+  <select id="findBookChapter" resultType="com.kyle.pojo.Chapter">
+    select chid,bid,chnane,number  from chapter where chapter.bid=#{bid}
+  </select>
+
+  <select id="findBookContent" resultType="java.lang.String">
+    select content from  chapter where chid=#{chid}
+  </select>
+
+  <select id="findCatalog" resultType="com.kyle.pojo.Book">
+    select * from book where book.cid=#{cid}
+  </select>
 </mapper>

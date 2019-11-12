@@ -68,4 +68,11 @@
       bid = #{bid,jdbcType=INTEGER}
     where bsid = #{bsid,jdbcType=INTEGER}
   </update>
+
+  <select id="findPayBook" resultType="com.kyle.pojo.Book"  >
+    select
+     * from book,bookstore
+    where
+      bookstore.uid=#{uid} and bookstore.bid=book.bid
+  </select>
 </mapper>

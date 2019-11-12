@@ -114,4 +114,9 @@
       awallet = #{awallet,jdbcType=DECIMAL}
     where aid = #{aid,jdbcType=INTEGER}
   </update>
+
+  <select id="findBookAuthor" parameterType="java.lang.Integer">
+    select * from author
+    where author.aid=#{aid}
+  </select>
 </mapper>

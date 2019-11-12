@@ -1,10 +1,22 @@
-
-spring:
-  application:
-    name: user
+server:
+  port: 9001
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://127.0.0.1:3306/bookstore?useUnicode=true&characterEncoding=utf8&useSSL=false
+#    username: root
+#    password: 760214212
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8000/eureka/
-server:
-  port: 9001
+
+spring:
+  cloud:
+    refresh:
+      refreshable: none
+  application:
+    name: user-book
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+
+

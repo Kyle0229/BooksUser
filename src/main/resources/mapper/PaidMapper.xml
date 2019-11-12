@@ -68,4 +68,9 @@
       bid = #{bid,jdbcType=INTEGER}
     where pid = #{pid,jdbcType=INTEGER}
   </update>
+
+  <select id="findCollectBook" resultType="com.kyle.pojo.Book">
+    select * from book,paid
+     where paid.uid=#{uid} and paid.bid=book.bid
+  </select>
 </mapper>

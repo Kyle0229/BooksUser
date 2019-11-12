@@ -55,4 +55,6 @@
     set cname = #{cname,jdbcType=VARCHAR}
     where cid = #{cid,jdbcType=INTEGER}
   </update>
+
+
 </mapper>

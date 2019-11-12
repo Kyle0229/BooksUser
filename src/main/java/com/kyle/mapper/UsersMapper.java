@@ -1,7 +1,9 @@
 package com.kyle.mapper;
 
 import com.kyle.pojo.Users;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface UsersMapper {
     int deleteByPrimaryKey(Integer uid);
 
@@ -14,4 +16,6 @@ public interface UsersMapper {
     int updateByPrimaryKeySelective(Users record);
 
     int updateByPrimaryKey(Users record);
+
+
 }

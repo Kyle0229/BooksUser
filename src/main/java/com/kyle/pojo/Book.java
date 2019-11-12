@@ -4,6 +4,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
+
 @Data
 @Entity
 @Table(name = "book")
@@ -20,13 +22,16 @@ public class Book implements Serializable {
 
     private String introduce;
 
-    private Long nummoney;
+    private BigDecimal nummoney;
 
     private Integer scount;
 
     private String bpic;
 
-    private Long bprice;
+    private BigDecimal bprice;
+
+    private Integer btickets;
+
 
     private static final long serialVersionUID = 1L;
 
@@ -70,11 +75,11 @@ public class Book implements Serializable {
         this.introduce = introduce == null ? null : introduce.trim();
     }
 
-    public Long getNummoney() {
+    public BigDecimal getNummoney() {
         return nummoney;
     }
 
-    public void setNummoney(Long nummoney) {
+    public void setNummoney(BigDecimal nummoney) {
         this.nummoney = nummoney;
     }
 
@@ -94,11 +99,4 @@ public class Book implements Serializable {
         this.bpic = bpic == null ? null : bpic.trim();
     }
 
-    public Long getBprice() {
-        return bprice;
-    }
-
-    public void setBprice(Long bprice) {
-        this.bprice = bprice;
-    }
 }

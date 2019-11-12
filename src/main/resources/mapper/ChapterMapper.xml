@@ -104,4 +104,6 @@
       number = #{number,jdbcType=INTEGER}
     where chid = #{chid,jdbcType=INTEGER}
   </update>
+
+
 </mapper>

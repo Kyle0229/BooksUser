@@ -1,8 +1,16 @@
 package com.kyle.pojo;
 
-import java.io.Serializable;
+import lombok.Data;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
+@Entity
+@Data
+@Table(name = "Author")
 public class Author implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer aid;
 
     private String aname;
@@ -15,7 +23,7 @@ public class Author implements Serializable {
 
     private String apic;
 
-    private Long awallet;
+    private BigDecimal awallet;
 
     private static final long serialVersionUID = 1L;
 
@@ -67,11 +75,11 @@ public class Author implements Serializable {
         this.apic = apic == null ? null : apic.trim();
     }
 
-    public Long getAwallet() {
+    public BigDecimal getAwallet() {
         return awallet;
     }
 
-    public void setAwallet(Long awallet) {
+    public void setAwallet(BigDecimal awallet) {
         this.awallet = awallet;
     }
 }

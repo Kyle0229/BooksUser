@@ -1,7 +1,9 @@
 package com.kyle.mapper;
 
 import com.kyle.pojo.Chapter;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface ChapterMapper {
     int deleteByPrimaryKey(Integer chid);
 
