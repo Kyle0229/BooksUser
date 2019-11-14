@@ -27,4 +27,6 @@ public interface BookService {
     String findBookCatalog(Integer cid);
 
     List<Book> findBtickets();
+
+    List<Book> findBookAll();
 }

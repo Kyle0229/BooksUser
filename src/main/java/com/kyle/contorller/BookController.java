@@ -37,7 +37,12 @@ public class BookController {
 //        }
 //        return "上传失败";
 //    }
-
+    //查询所有书
+    @RequestMapping("/findBookAll")
+    public List<Book> findBookAll(){
+        List<Book> bookAll = bookService.findBookAll();
+        return bookAll;
+    }
     //根据书的id查出书的详情
     @RequestMapping(value ="/findBookId",method = RequestMethod.POST)
     public Book findBook(@RequestBody Book book){

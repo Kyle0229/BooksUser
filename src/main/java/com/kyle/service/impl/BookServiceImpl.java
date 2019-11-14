@@ -90,4 +90,10 @@ public class BookServiceImpl implements BookService {
         List<Book> btickets = bookMapper.findBtickets();
         return btickets;
     }
+
+    @Override
+    public List<Book> findBookAll() {
+        List<Book> all = bookRepository.findAll();
+        return all;
+    }
 }
