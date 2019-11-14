@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kyle.mapper.PaidMapper" >
-  <resultMap id="BaseResultMap" type="com.kyle.pojo.Paid" >
+  <resultMap id="BaseResultMap" type="com.kyle.domain.Paid" >
     <id column="pid" property="pid" jdbcType="INTEGER" />
     <result column="uid" property="uid" jdbcType="INTEGER" />
     <result column="bid" property="bid" jdbcType="INTEGER" />
@@ -19,13 +19,13 @@
     delete from paid
     where pid = #{pid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.kyle.pojo.Paid" >
+  <insert id="insert" parameterType="com.kyle.domain.Paid" >
     insert into paid (pid, uid, bid
       )
     values (#{pid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{bid,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.kyle.pojo.Paid" >
+  <insert id="insertSelective" parameterType="com.kyle.domain.Paid" >
     insert into paid
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="pid != null" >
@@ -50,7 +50,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kyle.pojo.Paid" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.kyle.domain.Paid" >
     update paid
     <set >
       <if test="uid != null" >
@@ -62,15 +62,19 @@
     </set>
     where pid = #{pid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.kyle.pojo.Paid" >
+  <update id="updateByPrimaryKey" parameterType="com.kyle.domain.Paid" >
     update paid
     set uid = #{uid,jdbcType=INTEGER},
       bid = #{bid,jdbcType=INTEGER}
     where pid = #{pid,jdbcType=INTEGER}
   </update>
 
-  <select id="findCollectBook" resultType="com.kyle.pojo.Book">
+  <select id="findCollectBook" resultType="com.kyle.domain.Book">
     select * from book,paid
      where paid.uid=#{uid} and paid.bid=book.bid
+  </select>
+
+  <select id="findCollectCount" resultType="java.lang.Integer">
+    select count(bid) from paid where paid.uid=#{uid}
   </select>
 </mapper>

@@ -1,7 +1,8 @@
 package com.kyle.mapper;
 
-import com.kyle.pojo.Book;
-import com.kyle.pojo.Bookstore;
+import com.kyle.domain.Book;
+
+import com.kyle.domain.BookStore;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -9,15 +10,15 @@ import java.util.List;
 public interface BookstoreMapper {
     int deleteByPrimaryKey(Integer bsid);
 
-    int insert(Bookstore record);
+    int insert(BookStore record);
 
-    int insertSelective(Bookstore record);
+    int insertSelective(BookStore record);
 
-    Bookstore selectByPrimaryKey(Integer bsid);
+    BookStore selectByPrimaryKey(Integer bsid);
 
-    int updateByPrimaryKeySelective(Bookstore record);
+    int updateByPrimaryKeySelective(BookStore record);
 
-    int updateByPrimaryKey(Bookstore record);
+    int updateByPrimaryKey(BookStore record);
 
     List<Book> findPayBook(Integer uid);
 }

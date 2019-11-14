@@ -1,21 +1,21 @@
 package com.kyle.mapper;
 
-import com.kyle.pojo.Users;
+import com.kyle.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface UsersMapper {
     int deleteByPrimaryKey(Integer uid);
 
-    int insert(Users record);
+    int insert(User record);
 
-    int insertSelective(Users record);
+    int insertSelective(User record);
 
-    Users selectByPrimaryKey(Integer uid);
+    User selectByPrimaryKey(Integer uid);
 
-    int updateByPrimaryKeySelective(Users record);
+    int updateByPrimaryKeySelective(User record);
 
-    int updateByPrimaryKey(Users record);
+    int updateByPrimaryKey(User record);
 
 
 }

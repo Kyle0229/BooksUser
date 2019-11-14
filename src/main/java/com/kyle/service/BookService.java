@@ -1,7 +1,7 @@
 package com.kyle.service;
 
-import com.kyle.pojo.Author;
-import com.kyle.pojo.Book;
+import com.kyle.domain.Author;
+import com.kyle.domain.Book;
 
 import java.util.List;
 
@@ -22,4 +22,8 @@ public interface BookService {
     String findBookContent(Integer chid);
     //根据分类id查出所有书
     List<Book> findCatalog(Integer cid);
+    //根据书的cid查出所属分类
+    String findBookCatalog(Integer cid);
+
+    List<Book> findBtickets();
 }

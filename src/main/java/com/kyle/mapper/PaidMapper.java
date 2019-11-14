@@ -1,7 +1,7 @@
 package com.kyle.mapper;
 
-import com.kyle.pojo.Book;
-import com.kyle.pojo.Paid;
+import com.kyle.domain.Book;
+import com.kyle.domain.Paid;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -20,4 +20,6 @@ public interface PaidMapper {
     int updateByPrimaryKey(Paid record);
 
     List<Book>  findCollectBook(Integer uid);
+
+    Integer findCollectCount(Integer uid);
 }

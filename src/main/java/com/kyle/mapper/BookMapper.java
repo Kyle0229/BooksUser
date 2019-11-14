@@ -1,11 +1,11 @@
 package com.kyle.mapper;
 
-import com.kyle.pojo.Book;
+import com.kyle.domain.Book;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-@Component
+@Mapper
 public interface BookMapper {
     int deleteByPrimaryKey(Integer bid);
 
@@ -22,10 +22,15 @@ public interface BookMapper {
     List<Book> findScount();
 
     List<Book> findNumMoney();
+    List<Book> findBtickets();
 
     List findBookChapter(Integer bid);
 
     String findBookContent(Integer chid);
 
+    String findBookCatalog(Integer cid);
+
     List<Book> findCatalog(Integer cid);
+
+
 }

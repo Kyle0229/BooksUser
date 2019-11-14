@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kyle.mapper.CatalogMapper" >
-  <resultMap id="BaseResultMap" type="com.kyle.pojo.Catalog" >
+  <resultMap id="BaseResultMap" type="com.kyle.domain.Catalog" >
     <id column="cid" property="cid" jdbcType="INTEGER" />
     <result column="cname" property="cname" jdbcType="VARCHAR" />
   </resultMap>
@@ -18,11 +18,11 @@
     delete from catalog
     where cid = #{cid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.kyle.pojo.Catalog" >
+  <insert id="insert" parameterType="com.kyle.domain.Catalog" >
     insert into catalog (cid, cname)
     values (#{cid,jdbcType=INTEGER}, #{cname,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.kyle.pojo.Catalog" >
+  <insert id="insertSelective" parameterType="com.kyle.domain.Catalog" >
     insert into catalog
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="cid != null" >
@@ -41,7 +41,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kyle.pojo.Catalog" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.kyle.domain.Catalog" >
     update catalog
     <set >
       <if test="cname != null" >
@@ -50,7 +50,7 @@
     </set>
     where cid = #{cid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.kyle.pojo.Catalog" >
+  <update id="updateByPrimaryKey" parameterType="com.kyle.domain.Catalog" >
     update catalog
     set cname = #{cname,jdbcType=VARCHAR}
     where cid = #{cid,jdbcType=INTEGER}

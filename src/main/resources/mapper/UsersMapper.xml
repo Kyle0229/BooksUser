@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kyle.mapper.UsersMapper" >
-  <resultMap id="BaseResultMap" type="com.kyle.pojo.Users" >
+  <resultMap id="BaseResultMap" type="com.kyle.domain.User" >
     <id column="uid" property="uid" jdbcType="INTEGER" />
     <result column="bsid" property="bsid" jdbcType="INTEGER" />
     <result column="uname" property="uname" jdbcType="VARCHAR" />
@@ -16,6 +16,7 @@
     <result column="uticket" property="uticket" jdbcType="INTEGER" />
     <result column="ucoin" property="ucoin" jdbcType="DECIMAL" />
     <result column="uvipdate" property="uvipdate"  />
+    <result column="uexptime" property="uvipdate"  />
   </resultMap>
   <sql id="Base_Column_List" >
     uid, bsid, uname, uphone, uemail, ustatus, uvip, ugender, upassword, upic, uface, 
@@ -24,15 +25,15 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from users
+    from user
     where uid = #{uid,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from users
+    delete from user
     where uid = #{uid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.kyle.pojo.Users" >
-    insert into users (uid, bsid, uname, 
+  <insert id="insert" parameterType="com.kyle.domain.User" >
+    insert into user (uid, bsid, uname,
       uphone, uemail, ustatus, 
       uvip, ugender, upassword, 
       upic, uface, uticket, 
@@ -43,8 +44,8 @@
       #{upic,jdbcType=VARCHAR}, #{uface,jdbcType=VARCHAR}, #{uticket,jdbcType=INTEGER}, 
       #{ucoin,jdbcType=DECIMAL})
   </insert>
-  <insert id="insertSelective" parameterType="com.kyle.pojo.Users" >
-    insert into users
+  <insert id="insertSelective" parameterType="com.kyle.domain.User" >
+    insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="uid != null" >
         uid,
@@ -128,8 +129,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kyle.pojo.Users" >
-    update users
+  <update id="updateByPrimaryKeySelective" parameterType="com.kyle.domain.User" >
+    update user
     <set >
       <if test="bsid != null" >
         bsid = #{bsid,jdbcType=INTEGER},
@@ -170,8 +171,8 @@
     </set>
     where uid = #{uid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.kyle.pojo.Users" >
-    update users
+  <update id="updateByPrimaryKey" parameterType="com.kyle.domain.User" >
+    update user
     set bsid = #{bsid,jdbcType=INTEGER},
       uname = #{uname,jdbcType=VARCHAR},
       uphone = #{uphone,jdbcType=VARCHAR},

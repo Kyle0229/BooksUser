@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kyle.mapper.BookstoreMapper" >
-  <resultMap id="BaseResultMap" type="com.kyle.pojo.Bookstore" >
+  <resultMap id="BaseResultMap" type="com.kyle.domain.BookStore" >
     <id column="bsid" property="bsid" jdbcType="INTEGER" />
     <result column="uid" property="uid" jdbcType="INTEGER" />
     <result column="bid" property="bid" jdbcType="INTEGER" />
@@ -19,13 +19,13 @@
     delete from bookstore
     where bsid = #{bsid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.kyle.pojo.Bookstore" >
+  <insert id="insert" parameterType="com.kyle.domain.BookStore" >
     insert into bookstore (bsid, uid, bid
       )
     values (#{bsid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{bid,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.kyle.pojo.Bookstore" >
+  <insert id="insertSelective" parameterType="com.kyle.domain.BookStore" >
     insert into bookstore
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="bsid != null" >
@@ -50,7 +50,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kyle.pojo.Bookstore" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.kyle.domain.BookStore" >
     update bookstore
     <set >
       <if test="uid != null" >
@@ -62,14 +62,14 @@
     </set>
     where bsid = #{bsid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.kyle.pojo.Bookstore" >
+  <update id="updateByPrimaryKey" parameterType="com.kyle.domain.BookStore" >
     update bookstore
     set uid = #{uid,jdbcType=INTEGER},
       bid = #{bid,jdbcType=INTEGER}
     where bsid = #{bsid,jdbcType=INTEGER}
   </update>
 
-  <select id="findPayBook" resultType="com.kyle.pojo.Book"  >
+  <select id="findPayBook" resultType="com.kyle.domain.Book"  >
     select
      * from book,bookstore
     where

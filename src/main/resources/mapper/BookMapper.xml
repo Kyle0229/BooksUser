@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kyle.mapper.BookMapper" >
-  <resultMap id="BaseResultMap" type="com.kyle.pojo.Book" >
+  <resultMap id="BaseResultMap" type="com.kyle.domain.Book" >
     <id column="bid" property="bid" jdbcType="INTEGER" />
     <result column="cid" property="cid" jdbcType="INTEGER" />
     <result column="aid" property="aid" jdbcType="INTEGER" />
@@ -14,7 +14,7 @@
     <result column="bprice" property="bprice" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Base_Column_List" >
-    bid, cid, aid, bname, introduce, nummoney, scount, bpic, bprice
+    bid, cid, aid, bname, introduce, nummoney, scount, bpic, bprice，btickets
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -26,7 +26,7 @@
     delete from book
     where bid = #{bid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.kyle.pojo.Book" >
+  <insert id="insert" parameterType="com.kyle.domain.Book" >
     insert into book (bid, cid, aid, 
       bname, introduce, nummoney, 
       scount, bpic, bprice
@@ -36,7 +36,7 @@
       #{scount,jdbcType=INTEGER}, #{bpic,jdbcType=VARCHAR}, #{bprice,jdbcType=DECIMAL}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.kyle.pojo.Book" >
+  <insert id="insertSelective" parameterType="com.kyle.domain.Book" >
     insert into book
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="bid != null" >
@@ -97,7 +97,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kyle.pojo.Book" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.kyle.domain.Book" >
     update book
     <set >
       <if test="cid != null" >
@@ -127,7 +127,7 @@
     </set>
     where bid = #{bid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.kyle.pojo.Book" >
+  <update id="updateByPrimaryKey" parameterType="com.kyle.domain.Book" >
     update book
     set cid = #{cid,jdbcType=INTEGER},
       aid = #{aid,jdbcType=INTEGER},
@@ -147,8 +147,11 @@
   <select id="findNumMoney" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from book order by nummoney desc
   </select>
+  <select id="findBtickets" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from book order by btickets desc
+  </select>
   
-  <select id="findBookChapter" resultType="com.kyle.pojo.Chapter">
+  <select id="findBookChapter" resultType="com.kyle.domain.Chapter">
     select chid,bid,chnane,number  from chapter where chapter.bid=#{bid}
   </select>
 
@@ -156,7 +159,12 @@
     select content from  chapter where chid=#{chid}
   </select>
 
-  <select id="findCatalog" resultType="com.kyle.pojo.Book">
+  <select id="findCatalog" resultType="com.kyle.domain.Book">
     select * from book where book.cid=#{cid}
   </select>
+
+  <select id="findBookCatalog" resultType="java.lang.String">
+    select cname from catalog where cid=#{cid}
+  </select>
+
 </mapper>

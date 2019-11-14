@@ -1,6 +1,6 @@
 package com.kyle.mapper;
 
-import com.kyle.pojo.Chapter;
+import com.kyle.domain.Chapter;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

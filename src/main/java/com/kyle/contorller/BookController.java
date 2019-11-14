@@ -1,30 +1,32 @@
 package com.kyle.contorller;
 
-import com.kyle.mapper.BookResporitory;
-import com.kyle.mapper.CatalogResporitory;
-import com.kyle.mapper.ChapterResporitory;
-import com.kyle.pojo.Author;
-import com.kyle.pojo.Book;
-import com.kyle.pojo.Catalog;
+import com.kyle.Request.BookDown;
+import com.kyle.mapper.BookRepository;
+import com.kyle.mapper.CatalogRepository;
+import com.kyle.mapper.ChapterRespository;
+import com.kyle.domain.Author;
+import com.kyle.domain.Book;
+import com.kyle.domain.Catalog;
 import com.kyle.service.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class BookController {
     @Resource
-    private BookResporitory bookResporitory;
+    private BookRepository bookRepository;
     @Resource
-    private ChapterResporitory chapterResporitory;
+    private ChapterRespository chapterRespository;
     @Resource
     private BookService bookService;
     @Resource
-    private CatalogResporitory catalogResporitory;
+    private CatalogRepository catalogRepository;
 //    @RequestMapping("/savebook")
 //    public String savebook(@RequestBody Book book){
 //        String s = bookService.saveBook(book);
@@ -55,7 +57,12 @@ public class BookController {
         List<Book> scount = bookService.findScount();
         return scount;
     }
-
+    //降序查询所有的书的投票数
+    @RequestMapping("/findBtickets")
+    public List<Book> findBtickets(){
+        List<Book> btickets = bookService.findBtickets();
+        return btickets;
+    }
 
     //降序查询所有书的收入金额nummoney
     @RequestMapping("/findNumMoney")
@@ -82,7 +89,7 @@ public class BookController {
     //查询所有分类
     @RequestMapping("/findAllCatalaog")
     public List<Catalog> findAllCatalaog(){
-        List<Catalog> all = catalogResporitory.findAll();
+        List<Catalog> all = catalogRepository.findAll();
         return all;
     }
 
@@ -95,7 +102,34 @@ public class BookController {
     }
 
 
+    public List<BookDown> findBookDown(){
+        List<BookDown> bookDownList=new ArrayList<>();
+        List<Book> all = bookRepository.findAll();
+        for (Book list:all){
+            Integer bid = list.getBid();
+            Integer aid = list.getAid();
+            Integer cid = list.getCid();
+            String bname = list.getBname();
+            Integer btickets = list.getBtickets();
+            BigDecimal nummoney = list.getNummoney();
+            BigDecimal bprice = list.getBprice();
 
+            Author bookAuthor = bookService.findBookAuthor(aid);
+            String aname = bookAuthor.getAname();
+            String catalog = bookService.findBookCatalog(cid);
+            BookDown bookDown = new BookDown();
+            bookDown.getBook().setBid(bid);
+            bookDown.getBook().setBname(bname);
+            bookDown.getBook().setNummoney(nummoney);
+            bookDown.getBook().setBtickets(btickets);
+            bookDown.getBook().setBprice(bprice);
+            bookDown.getAuthor().setAname(aname);
+            bookDown.getCatalog().setCname(catalog);
+            bookDownList.add(bookDown);
+
+        }
+        return bookDownList;
+    }
 
 
 }
