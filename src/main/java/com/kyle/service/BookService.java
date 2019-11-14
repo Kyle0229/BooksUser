@@ -2,6 +2,7 @@ package com.kyle.service;
 
 import com.kyle.domain.Author;
 import com.kyle.domain.Book;
+import com.kyle.domain.Chapter;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface BookService {
     //降序查询所有的书的收入
     List<Book> findNumMoney();
     //根据书的id查询所有的章节
-    List findBookChapter(Integer bid);
+    List<Chapter> findBookChapter(Integer bid);
     //根据章节id查出章节内容
     String findBookContent(Integer chid);
     //根据分类id查出所有书

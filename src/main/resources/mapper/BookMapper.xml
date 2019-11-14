@@ -14,7 +14,7 @@
     <result column="bprice" property="bprice" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Base_Column_List" >
-    bid, cid, aid, bname, introduce, nummoney, scount, bpic, bprice，btickets
+    bid, cid, aid, bname, introduce, nummoney, scount, bpic, bprice,btickets
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -152,7 +152,7 @@
   </select>
   
   <select id="findBookChapter" resultType="com.kyle.domain.Chapter">
-    select chid,bid,chnane,number  from chapter where chapter.bid=#{bid}
+    select chid,bid,chnane,number  from chapter where bid=#{bid}
   </select>
 
   <select id="findBookContent" resultType="java.lang.String">

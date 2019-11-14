@@ -65,7 +65,7 @@ public class UsersController {
         return userAll;
     }
     //需要从登录信息里拿到uid添加进已购买表里去
-    @RequestMapping("/payBook")
+    @RequestMapping(value = "/payBook",method = RequestMethod.POST)
     public String saveBookStore(@RequestBody Book book,HttpSession session){
         User user = (User)session.getAttribute("user");
         Integer uid = user.getUid();
@@ -85,7 +85,7 @@ public class UsersController {
         return payBook;
     }
     //收藏书
-    @RequestMapping("/collectBook")
+    @RequestMapping(value = "/collectBook",method = RequestMethod.POST)
     public String savePaid(@RequestBody Book book,HttpSession session){
         Integer bid = book.getBid();
         User user = (User)session.getAttribute("user");

@@ -1,5 +1,6 @@
 package com.kyle.service.impl;
 
+import com.kyle.domain.Chapter;
 import com.kyle.mapper.AuthorMapper;
 import com.kyle.mapper.BookMapper;
 import com.kyle.mapper.BookRepository;
@@ -61,7 +62,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List findBookChapter(Integer bid) {
-        List bookChapter = bookMapper.findBookChapter(bid);
+        List<Chapter> bookChapter = bookMapper.findBookChapter(bid);
 
         return bookChapter;
     }

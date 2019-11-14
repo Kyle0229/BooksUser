@@ -116,7 +116,7 @@
     where aid = #{aid,jdbcType=INTEGER}
   </update>
 
-  <select id="findBookAuthor" parameterType="java.lang.Integer">
+  <select id="findBookAuthor" resultType="com.kyle.domain.Author">
     select * from author
     where author.aid=#{aid}
   </select>

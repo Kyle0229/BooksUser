@@ -1,6 +1,7 @@
 package com.kyle.contorller;
 
 import com.kyle.Request.BookDown;
+import com.kyle.domain.Chapter;
 import com.kyle.mapper.BookRepository;
 import com.kyle.mapper.CatalogRepository;
 import com.kyle.mapper.ChapterRespository;
@@ -10,6 +11,7 @@ import com.kyle.domain.Catalog;
 import com.kyle.service.BookService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -37,14 +39,14 @@ public class BookController {
 //    }
 
     //根据书的id查出书的详情
-    @RequestMapping("/findBookId")
+    @RequestMapping(value ="/findBookId",method = RequestMethod.POST)
     public Book findBook(@RequestBody Book book){
         Integer bid = book.getBid();
         Book book1 = bookService.findBookId(bid);
         return book1;
     }
     //根据书的id查出作者的信息
-    @RequestMapping("/findBookAuthor")
+    @RequestMapping(value ="/findBookAuthor",method = RequestMethod.POST)
     public Author findBookAuthor(@RequestBody Book book){
         Integer aid = book.getAid();
         Author bookAuthor = bookService.findBookAuthor(aid);
@@ -71,10 +73,12 @@ public class BookController {
         return numMOney;
     }
 //根据书的id查出书的所有章节名
-    @RequestMapping("/findBookChapter")
-    public List findBookChapter(@RequestBody Book book){
+    @RequestMapping(value = "/findBookChapter",method = RequestMethod.POST)
+    public List<Chapter> findBookChapter(@RequestBody Book book){
         Integer bid = book.getBid();
-        List bookChapter = bookService.findBookChapter(bid);
+        System.out.println(bid);
+        List<Chapter> bookChapter = bookService.findBookChapter(bid);
+        System.out.println(bookChapter);
         return bookChapter;
     }
 
@@ -94,14 +98,15 @@ public class BookController {
     }
 
     //根据分类id查出分类下所有书籍
-    @RequestMapping("/findCatalog")
+    @RequestMapping(value ="/findCatalog",method = RequestMethod.POST)
     public List<Book> findCatalog(@RequestBody Catalog catalog){
         Integer cid = catalog.getCid();
         List<Book> catalog1 = bookService.findCatalog(cid);
         return catalog1;
     }
 
-
+    //后台查询
+    @RequestMapping("/findBookDown")
     public List<BookDown> findBookDown(){
         List<BookDown> bookDownList=new ArrayList<>();
         List<Book> all = bookRepository.findAll();
