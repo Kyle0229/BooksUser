@@ -115,6 +115,18 @@ public class BookController {
         List<Book> newBook = bookService.findNewBook();
         return newBook;
     }
+    //查询言情
+    @RequestMapping("/findRomantic")
+    public List<Book> findRomantic(){
+        List<Book> romantic = bookService.findRomantic();
+        return romantic;
+    }
+    //查询玄幻
+    @RequestMapping("/findMan")
+    public List<Book> findMan(){
+        List<Book> man = bookService.findMan();
+        return man;
+    }
     //后台查询
     @RequestMapping("/findBookDown")
     public List<BookDown> findBookDown(){

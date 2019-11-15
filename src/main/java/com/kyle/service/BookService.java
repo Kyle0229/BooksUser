@@ -31,4 +31,8 @@ public interface BookService {
     List<Book> findBookAll();
 
     List<Book> findNewBook();
+
+    List<Book> findRomantic();
+
+    List<Book> findMan();
 }

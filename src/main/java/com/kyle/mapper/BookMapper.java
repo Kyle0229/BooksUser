@@ -33,4 +33,7 @@ public interface BookMapper {
     List<Book> findCatalog(Integer cid);
 
     List<Book> findNewBook();
+
+    List<Book> findRomantic();
+    List<Book> findMan();
 }

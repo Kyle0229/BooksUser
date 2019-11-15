@@ -170,4 +170,12 @@
   <select id="findNewBook" resultType="com.kyle.domain.Book">
     select <include refid="Base_Column_List" /> from book order by bid desc
   </select>
+  
+  <select id="findRomantic" resultType="com.kyle.domain.Book">
+    select  <include refid="Base_Column_List" /> from book where cid=11
+  </select>
+  
+  <select id="findMan" resultType="com.kyle.domain.Book">
+    select  <include refid="Base_Column_List" /> from book where cid=1
+  </select>
 </mapper>

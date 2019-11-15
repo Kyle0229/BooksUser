@@ -102,4 +102,16 @@ public class BookServiceImpl implements BookService {
         List<Book> newBook = bookMapper.findNewBook();
         return newBook;
     }
+
+    @Override
+    public List<Book> findRomantic() {
+        List<Book> romantic = bookMapper.findRomantic();
+        return romantic;
+    }
+
+    @Override
+    public List<Book> findMan() {
+        List<Book> man = bookMapper.findMan();
+        return man;
+    }
 }
