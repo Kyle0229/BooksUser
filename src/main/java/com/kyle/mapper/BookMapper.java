@@ -32,5 +32,5 @@ public interface BookMapper {
 
     List<Book> findCatalog(Integer cid);
 
-
+    List<Book> findNewBook();
 }

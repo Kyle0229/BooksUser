@@ -96,4 +96,10 @@ public class BookServiceImpl implements BookService {
         List<Book> all = bookRepository.findAll();
         return all;
     }
+
+    @Override
+    public List<Book> findNewBook() {
+        List<Book> newBook = bookMapper.findNewBook();
+        return newBook;
+    }
 }

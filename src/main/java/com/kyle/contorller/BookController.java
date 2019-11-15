@@ -109,7 +109,12 @@ public class BookController {
         List<Book> catalog1 = bookService.findCatalog(cid);
         return catalog1;
     }
-
+    //根据id倒序查询
+    @RequestMapping("/findNewBook")
+    public List<Book> findNewBook(){
+        List<Book> newBook = bookService.findNewBook();
+        return newBook;
+    }
     //后台查询
     @RequestMapping("/findBookDown")
     public List<BookDown> findBookDown(){

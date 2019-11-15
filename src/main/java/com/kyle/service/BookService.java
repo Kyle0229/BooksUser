@@ -29,4 +29,6 @@ public interface BookService {
     List<Book> findBtickets();
 
     List<Book> findBookAll();
+
+    List<Book> findNewBook();
 }

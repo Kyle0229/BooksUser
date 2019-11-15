@@ -160,11 +160,14 @@
   </select>
 
   <select id="findCatalog" resultType="com.kyle.domain.Book">
-    select * from book where book.cid=#{cid}
+    select <include refid="Base_Column_List" /> from book where book.cid=#{cid}
   </select>
 
   <select id="findBookCatalog" resultType="java.lang.String">
     select cname from catalog where cid=#{cid}
   </select>
 
+  <select id="findNewBook" resultType="com.kyle.domain.Book">
+    select <include refid="Base_Column_List" /> from book order by bid desc
+  </select>
 </mapper>
