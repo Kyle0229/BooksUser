@@ -1,14 +1,13 @@
 package com.kyle.contorller;
 
 import com.kyle.Request.BookDown;
-import com.kyle.domain.Chapter;
+import com.kyle.domain.*;
 import com.kyle.mapper.BookRepository;
 import com.kyle.mapper.CatalogRepository;
 import com.kyle.mapper.ChapterRespository;
-import com.kyle.domain.Author;
-import com.kyle.domain.Book;
-import com.kyle.domain.Catalog;
+import com.kyle.mapper.SelectionRepository;
 import com.kyle.service.BookService;
+import com.kyle.service.SelectionService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +17,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class BookController {
@@ -28,7 +28,11 @@ public class BookController {
     @Resource
     private BookService bookService;
     @Resource
+    private SelectionService selectionService;
+    @Resource
     private CatalogRepository catalogRepository;
+    @Resource
+    private SelectionRepository selectionRepository;
 //    @RequestMapping("/savebook")
 //    public String savebook(@RequestBody Book book){
 //        String s = bookService.saveBook(book);
@@ -77,7 +81,7 @@ public class BookController {
         List<Book> numMOney = bookService.findNumMoney();
         return numMOney;
     }
-//根据书的id查出书的所有章节名
+    //根据书的id查出书的所有章节名
     @RequestMapping(value = "/findBookChapter",method = RequestMethod.POST)
     public List<Chapter> findBookChapter(@RequestBody Book book){
         Integer bid = book.getBid();
@@ -115,6 +119,34 @@ public class BookController {
         List<Book> newBook = bookService.findNewBook();
         return newBook;
     }
+    //查询推荐
+    @RequestMapping("/findSelection")
+    public List<Book> findSelection(){
+        List<Book> bookList=new ArrayList<>();
+        List<Selection> selectionId = selectionService.findSelectionId();
+//        System.out.println(selectionId);
+        for (Selection s:selectionId){
+            Integer bid = s.getBid();
+            Book bookId = bookService.findBookId(bid);
+            bookList.add(bookId);
+        }
+        return bookList;
+    }
+    @RequestMapping(value = "/addSelection",method = RequestMethod.POST)
+    public String addSelection(@RequestBody Book book){
+        Integer bid = book.getBid();
+        System.out.println(bid);
+        Optional<Selection> byId = selectionRepository.findByBid(bid);
+
+    System.out.println(byId.isPresent());
+        if (byId.isPresent()){
+            return "error";
+        }
+        Selection selection=new Selection();
+        selection.setBid(bid);
+        selectionRepository.save(selection);
+        return "success";
+    }
     //查询言情
     @RequestMapping("/findRomantic")
     public List<Book> findRomantic(){
@@ -131,7 +163,7 @@ public class BookController {
     @RequestMapping("/findBookDown")
     public List<BookDown> findBookDown(){
         List<BookDown> bookDownList=new ArrayList<>();
-        List<Book> all = bookRepository.findAll();
+        List<Book> all = bookService.findAscMoney();
         for (Book list:all){
             Integer bid = list.getBid();
             Integer aid = list.getAid();
@@ -145,17 +177,40 @@ public class BookController {
             String aname = bookAuthor.getAname();
             String catalog = bookService.findBookCatalog(cid);
             BookDown bookDown = new BookDown();
-            bookDown.getBook().setBid(bid);
-            bookDown.getBook().setBname(bname);
-            bookDown.getBook().setNummoney(nummoney);
-            bookDown.getBook().setBtickets(btickets);
-            bookDown.getBook().setBprice(bprice);
-            bookDown.getAuthor().setAname(aname);
-            bookDown.getCatalog().setCname(catalog);
+            Book book=new Book();
+            Author author=new Author();
+            Catalog catalog1=new Catalog();
+            book.setBid(bid);
+            book.setBprice(bprice);
+            book.setNummoney(nummoney);
+            book.setBname(bname);
+            book.setBtickets(btickets);
+            bookDown.setBook(book);
+//            bookDown.getBook().setBname(bname);
+//
+//            bookDown.getBook().setNummoney(nummoney);
+//            bookDown.getBook().setBtickets(btickets);
+//            bookDown.getBook().setBprice(bprice);
+            author.setAname(aname);
+            catalog1.setCname(catalog);
+
+//            bookDown.getAuthor().setAname(aname);
+//            bookDown.getCatalog().setCname(catalog);
+            bookDown.setAuthor(author);
+            bookDown.setCatalog(catalog1);
             bookDownList.add(bookDown);
 
         }
         return bookDownList;
+    }
+
+    @RequestMapping("/deleteSelection")
+    public String deleteSelection(@RequestBody Book book){
+        Integer bid = book.getBid();
+        Selection sid = selectionService.findSid(bid);
+        Integer sid1 = sid.getSid();
+        selectionRepository.deleteById(sid1);
+        return "成功取消";
     }
 
 

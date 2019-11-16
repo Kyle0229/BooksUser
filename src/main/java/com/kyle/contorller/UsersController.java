@@ -45,8 +45,8 @@ public class UsersController {
     private BookStoreService bookStoreService;
     @Resource
     private BookRepository bookRepository;
-    //根据用户id查询用户信息
-    //需要用户信息
+    //根据用户session拿到的id查询用户信息
+
     @RequestMapping("/findUserId")
     public User findUserId(HttpSession session){
         System.out.println(session.getId());
@@ -59,6 +59,16 @@ public class UsersController {
         }
         return null;
     }
+    //根据id查询用户信息
+    @RequestMapping("/findByUserId")
+    public User findByUserId(@RequestBody User user){
+        Integer uid = user.getUid();
+        Optional<User> byId = usersRepository.findById(uid);
+        if (byId!=null){
+            return byId.get();
+        }
+        return byId.get();
+    }
     @RequestMapping("/findUserAll")
     public List<User> findUserAll(){
         List<User> userAll = usersService.findUserAll();
@@ -68,6 +78,25 @@ public class UsersController {
     @RequestMapping(value = "/payBook",method = RequestMethod.POST)
     public String saveBookStore(@RequestBody Book book,HttpSession session){
         User user = (User)session.getAttribute("user");
+        BigDecimal bprice = book.getBprice();
+        //给书的收入加钱
+        BigDecimal nummoney = book.getNummoney();
+        BigDecimal add = nummoney.add(bprice);
+        book.setNummoney(add);
+        bookRepository.saveAndFlush(book);
+        //根据书id查出作者id
+        Integer aid = book.getAid();
+        Author bookAuthor = bookService.findBookAuthor(aid);
+        BigDecimal awallet = bookAuthor.getAwallet();
+        //给作者加钱
+        BigDecimal add1 = awallet.add(bprice);
+        bookAuthor.setAwallet(add1);
+        authorRepository.save(bookAuthor);
+        //给用户减钱
+        BigDecimal ucoin = user.getUcoin();
+        BigDecimal subtract = ucoin.subtract(bprice);
+        user.setUcoin(subtract);
+        usersRepository.saveAndFlush(user);
         Integer uid = user.getUid();
         Integer bid = book.getBid();
        bookStoreService.saveBook(uid,bid);
@@ -88,6 +117,10 @@ public class UsersController {
     @RequestMapping(value = "/collectBook",method = RequestMethod.POST)
     public String savePaid(@RequestBody Book book,HttpSession session){
         Integer bid = book.getBid();
+        Integer scount = book.getScount();
+        scount++;
+        book.setScount(scount);
+        bookRepository.saveAndFlush(book);
         User user = (User)session.getAttribute("user");
         Integer uid = user.getUid();
         usersService.saveCollect(uid,bid);
@@ -242,35 +275,35 @@ public class UsersController {
         usersRepository.saveAndFlush(user);
         return user;
     }
-
-    @RequestMapping("/viptime")
-    public String viptime(@RequestBody User user){
+//废弃不用了
+//    @RequestMapping("/viptime")
+//    public String viptime(@RequestBody User user){
 //        System.out.println(user);
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-        Date uvipdate = user.getUexptime();
-        Calendar rightNow = Calendar.getInstance();
-        System.out.println(uvipdate);
-        rightNow.setTime(uvipdate);
-        Integer uvip = user.getUvip();
-        int d=0;
-        if (uvip==1){
-            d=1;
-        }else if (uvip==2){
-            d=3;
-        }else if (uvip==3){
-            d=6;
-        }else if (uvip==4){
-            d=12;
-        }
-        rightNow.add(Calendar.MONTH,d);
-        Date dt1=rightNow.getTime();
-        String reStr = sdf.format(dt1);
-//        System.out.println(dt1);
-        System.out.println(reStr);
-
-        return reStr;
-
-    }
+//        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+//        Date uvipdate = user.getUexptime();
+//        Calendar rightNow = Calendar.getInstance();
+//        System.out.println(uvipdate);
+//        rightNow.setTime(uvipdate);
+//        Integer uvip = user.getUvip();
+//        int d=0;
+//        if (uvip==1){
+//            d=1;
+//        }else if (uvip==2){
+//            d=3;
+//        }else if (uvip==3){
+//            d=6;
+//        }else if (uvip==4){
+//            d=12;
+//        }
+//        rightNow.add(Calendar.MONTH,d);
+//        Date dt1=rightNow.getTime();
+//        String reStr = sdf.format(dt1);
+//       System.out.println(dt1);
+//        System.out.println(reStr);
+//
+//        return reStr;
+//
+//    }
     //个人修改信息
     @RequestMapping("/updateUser")
     public String updateUser(@RequestBody User user){
@@ -285,5 +318,12 @@ public class UsersController {
             return null;
         }
         return uploadUtils.upload(file);
+    }
+
+    @RequestMapping(value = "/deleteUser",method = RequestMethod.POST)
+    public String deleteUser(@RequestBody User user){
+        Integer uid = user.getUid();
+        usersRepository.deleteById(uid);
+        return "删除成功";
     }
 }

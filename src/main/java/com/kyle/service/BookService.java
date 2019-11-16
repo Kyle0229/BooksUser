@@ -17,6 +17,8 @@ public interface BookService {
     List<Book> findScount();
     //降序查询所有的书的收入
     List<Book> findNumMoney();
+    //正序查收入
+    List<Book> findAscMoney();
     //根据书的id查询所有的章节
     List<Chapter> findBookChapter(Integer bid);
     //根据章节id查出章节内容

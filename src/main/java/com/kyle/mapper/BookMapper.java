@@ -22,6 +22,7 @@ public interface BookMapper {
     List<Book> findScount();
 
     List<Book> findNumMoney();
+    List<Book> findAscMoney();
     List<Book> findBtickets();
 
     List findBookChapter(Integer bid);

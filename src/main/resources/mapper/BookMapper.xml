@@ -147,6 +147,11 @@
   <select id="findNumMoney" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from book order by nummoney desc
   </select>
+
+  <select id="findAscMoney" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from book order by nummoney asc
+  </select>
+
   <select id="findBtickets" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from book order by btickets desc
   </select>
@@ -172,10 +177,14 @@
   </select>
   
   <select id="findRomantic" resultType="com.kyle.domain.Book">
-    select  <include refid="Base_Column_List" /> from book where cid=11
+    select  <include refid="Base_Column_List" /> from book where cid=11 order by rand()
   </select>
   
   <select id="findMan" resultType="com.kyle.domain.Book">
-    select  <include refid="Base_Column_List" /> from book where cid=1
+    select  <include refid="Base_Column_List" /> from book where cid in 1,2,3,4,5,6,7 order by rand()
+  </select>
+
+  <select id="findSelectionId" resultType="com.kyle.domain.Selection">
+    select sid,bid from selection order by sid desc
   </select>
 </mapper>
