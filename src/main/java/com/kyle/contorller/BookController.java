@@ -94,8 +94,9 @@ public class BookController {
 
     //根据章节的id查出章节内容
     @RequestMapping("/findBookContent")
-    public String findBookContent(){
-        String bookContent = bookService.findBookContent(6888);
+    public String findBookContent(@RequestBody Chapter chapter){
+        Integer chid = chapter.getChid();
+        String bookContent = bookService.findBookContent(chid);
         return bookContent;
     }
 

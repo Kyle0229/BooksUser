@@ -2,6 +2,7 @@ package com.kyle.contorller;
 
 import com.kyle.mapper.AuthorRepository;
 import com.kyle.domain.Author;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,5 +18,12 @@ public class AuthorController {
     public List<Author> findAuthorAll(){
         List<Author> all = authorRepository.findAll();
         return all;
+    }
+
+    @RequestMapping("/deleteAuthor")
+    public String deleteAuthor(@RequestBody Author author){
+        Integer aid = author.getAid();
+        authorRepository.deleteById(aid);
+        return "删除成功";
     }
 }
