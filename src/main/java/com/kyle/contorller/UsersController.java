@@ -74,6 +74,7 @@ public class UsersController {
         List<User> userAll = usersService.findUserAll();
         return userAll;
     }
+    //购买书
     //需要从登录信息里拿到uid添加进已购买表里去
     @RequestMapping(value = "/payBook",method = RequestMethod.POST)
     public String saveBookStore(@RequestBody Book book,HttpSession session){
@@ -93,10 +94,23 @@ public class UsersController {
         bookAuthor.setAwallet(add1);
         authorRepository.save(bookAuthor);
         //给用户减钱
+        //判断是否有vip，如果有乘0.8
         BigDecimal ucoin = user.getUcoin();
-        BigDecimal subtract = ucoin.subtract(bprice);
-        user.setUcoin(subtract);
-        usersRepository.saveAndFlush(user);
+        if (user.getUvip()!=0){
+            BigDecimal a =null;
+            Integer faultRate = 8;
+            a = BigDecimal.valueOf(faultRate.doubleValue()/10);
+            
+            BigDecimal multiply = bprice.multiply(a);
+            BigDecimal subtract = ucoin.subtract(bprice);
+            user.setUcoin(subtract);
+            usersRepository.saveAndFlush(user);
+        }else {
+            BigDecimal subtract = ucoin.subtract(bprice);
+            user.setUcoin(subtract);
+            usersRepository.saveAndFlush(user);
+        }
+
         Integer uid = user.getUid();
         Integer bid = book.getBid();
        bookStoreService.saveBook(uid,bid);
@@ -230,10 +244,10 @@ public class UsersController {
         int d=0;
         if(uvip.equals(0)) {
             user.setUvip(uvip);
-            BigDecimal bigDecimal1 = new BigDecimal("9");
-            BigDecimal bigDecimal2 = new BigDecimal("25");
-            BigDecimal bigDecimal3 = new BigDecimal("45");
-            BigDecimal bigDecimal4 = new BigDecimal("80");
+            BigDecimal bigDecimal1 = new BigDecimal("90");
+            BigDecimal bigDecimal2 = new BigDecimal("250");
+            BigDecimal bigDecimal3 = new BigDecimal("450");
+            BigDecimal bigDecimal4 = new BigDecimal("800");
             if (uvip == 1) {
                 BigDecimal subtract = user.getUcoin().subtract(bigDecimal1);
                 user.setUcoin(subtract);
@@ -271,10 +285,10 @@ public class UsersController {
             if (uvip> user.getUvip()){
                 user.setUvip(uvip);
             }
-            BigDecimal bigDecimal1 = new BigDecimal("9");
-            BigDecimal bigDecimal2 = new BigDecimal("25");
-            BigDecimal bigDecimal3 = new BigDecimal("45");
-            BigDecimal bigDecimal4 = new BigDecimal("80");
+            BigDecimal bigDecimal1 = new BigDecimal("90");
+            BigDecimal bigDecimal2 = new BigDecimal("250");
+            BigDecimal bigDecimal3 = new BigDecimal("450");
+            BigDecimal bigDecimal4 = new BigDecimal("800");
             if (uvip == 1) {
                 BigDecimal subtract = user.getUcoin().subtract(bigDecimal1);
                 user.setUcoin(subtract);
@@ -363,4 +377,5 @@ public class UsersController {
         usersRepository.deleteById(uid);
         return "删除成功";
     }
+
 }

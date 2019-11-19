@@ -8,13 +8,24 @@ import com.kyle.mapper.ChapterRespository;
 import com.kyle.mapper.SelectionRepository;
 import com.kyle.service.BookService;
 import com.kyle.service.SelectionService;
+import com.kyle.utils.Separater;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.math.BigDecimal;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -94,10 +105,55 @@ public class BookController {
 
     //根据章节的id查出章节内容
     @RequestMapping("/findBookContent")
-    public String findBookContent(@RequestBody Chapter chapter){
+    public String findBookContent(@RequestBody Chapter chapter) throws IOException {
         Integer chid = chapter.getChid();
+        System.out.println(chid);
         String bookContent = bookService.findBookContent(chid);
-        return bookContent;
+        File fin = new File(bookContent);
+        StringBuilder strline=null;
+        try (RandomAccessFile accessFile = new RandomAccessFile(fin, "r");
+             FileChannel fcin = accessFile.getChannel();
+        ){
+            Charset charset = Charset.forName("UTF-8");
+            int bufSize = 100000;
+            ByteBuffer rBuffer = ByteBuffer.allocate(bufSize);
+            String enterStr = "\n";
+            byte[] bs = new byte[bufSize];
+            strline = new StringBuilder("");
+            StringBuilder strBuf = new StringBuilder("");
+            while (fcin.read(rBuffer) != -1) {
+                int rSize = rBuffer.position();
+                rBuffer.rewind();
+                rBuffer.get(bs);
+                rBuffer.clear();
+                String tempString = new String(bs, 0, rSize,charset);
+                tempString = tempString.replaceAll("\r", "");
+
+                int fromIndex = 0;
+                int endIndex = 0;
+                while ((endIndex = tempString.indexOf(enterStr, fromIndex)) != -1) {
+                    String line = tempString.substring(fromIndex, endIndex);
+                    line = strBuf.toString() + line;
+                    strline.append(line.trim());
+
+                    strBuf.delete(0, strBuf.length());
+                    fromIndex = endIndex + 1;
+                }
+                if (rSize > tempString.length()) {
+                    strline.append(tempString.substring(fromIndex, tempString.length()));
+                    strBuf.append(tempString.substring(fromIndex, tempString.length()));
+                } else {
+                    strline.append(tempString.substring(fromIndex, rSize));
+                    strBuf.append(tempString.substring(fromIndex, rSize));
+                }
+            }
+//            System.out.println(strline.toString().replaceAll("\"", "'"));
+        } catch (Exception e) {
+
+        }
+
+
+        return strline.toString().replaceAll("\"", "'");
     }
 
     //查询所有分类
@@ -222,4 +278,10 @@ public class BookController {
         return "下架成功";
     }
 
+
+    @RequestMapping("/save")
+    public void save() throws Exception {
+        Separater separater=new Separater();
+        separater.save();
+    }
 }

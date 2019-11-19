@@ -135,7 +135,7 @@ public class BookServiceImpl implements BookService {
             return (List<Book>)findBookAll;
         }
         List<Book> all = bookRepository.findAll();
-        redisTemplate.opsForValue().set("findBookAll",all,3,TimeUnit.DAYS);
+        redisTemplate.opsForValue().set("findBookAll",all,3,TimeUnit.HOURS);
         return all;
     }
 
