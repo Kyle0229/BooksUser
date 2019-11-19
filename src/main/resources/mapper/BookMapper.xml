@@ -181,7 +181,7 @@
   </select>
   
   <select id="findMan" resultType="com.kyle.domain.Book">
-    select  <include refid="Base_Column_List" /> from book where cid in 1,2,3,4,5,6,7 order by rand()
+    select  <include refid="Base_Column_List" /> from book where cid =1 order by rand()
   </select>
 
   <select id="findSelectionId" resultType="com.kyle.domain.Selection">

@@ -3,6 +3,7 @@ package com.kyle.mapper;
 import com.kyle.domain.Book;
 import com.kyle.domain.Paid;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 @Mapper
@@ -22,4 +23,6 @@ public interface PaidMapper {
     List<Book>  findCollectBook(Integer uid);
 
     Integer findCollectCount(Integer uid);
+
+    Paid findCollect(@Param("uid") Integer uid, @Param("bid")Integer bid);
 }

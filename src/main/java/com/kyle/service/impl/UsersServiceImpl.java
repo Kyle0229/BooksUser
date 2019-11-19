@@ -83,7 +83,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void saveCollect(Integer uid, Integer bid) {
         Paid paid=new Paid();
-        paid.setAid(uid);
+        paid.setUid(uid);
         paid.setBid(bid);
         paidRepository.save(paid);
     }

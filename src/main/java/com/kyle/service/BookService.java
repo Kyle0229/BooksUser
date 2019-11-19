@@ -1,8 +1,6 @@
 package com.kyle.service;
 
-import com.kyle.domain.Author;
-import com.kyle.domain.Book;
-import com.kyle.domain.Chapter;
+import com.kyle.domain.*;
 
 import java.util.List;
 
@@ -37,4 +35,8 @@ public interface BookService {
     List<Book> findRomantic();
 
     List<Book> findMan();
+
+    Paid findCollect(Integer uid, Integer bid);
+
+    BookStore findBookStore(Integer uid, Integer bid);
 }

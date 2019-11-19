@@ -49,9 +49,9 @@ public class UsersController {
 
     @RequestMapping("/findUserId")
     public User findUserId(HttpSession session){
-        System.out.println(session.getId());
+//        System.out.println(session.getId());
         User user = (User)session.getAttribute("user");
-        System.out.println(user.getUname());
+//        System.out.println(user.getUname());
         Integer uid = user.getUid();
         Optional<User> byId = usersRepository.findById(uid);
         if (byId!=null){
@@ -116,17 +116,44 @@ public class UsersController {
     //收藏书
     @RequestMapping(value = "/collectBook",method = RequestMethod.POST)
     public String savePaid(@RequestBody Book book,HttpSession session){
+        User user = (User)session.getAttribute("user");
+        Integer uid = user.getUid();
         Integer bid = book.getBid();
         Integer scount = book.getScount();
         scount++;
         book.setScount(scount);
         bookRepository.saveAndFlush(book);
-        User user = (User)session.getAttribute("user");
-        Integer uid = user.getUid();
         usersService.saveCollect(uid,bid);
-
         return "已加入书架";
     }
+    //查询书架是否有此书
+    @RequestMapping(value = "/findUserCollect",method = RequestMethod.POST)
+    public String findCollect(@RequestBody Book book,HttpSession session){
+        Integer bid = book.getBid();
+        User user = (User)session.getAttribute("user");
+        System.out.println(bid);
+        Integer uid = user.getUid();
+        System.out.println(uid);
+        Paid collect = bookService.findCollect(uid, bid);
+        if (collect!=null){
+            return "书架已有";
+        }
+        return "书架没有";
+    }
+    //判断用户是佛已购买此书
+    @RequestMapping("/findBookStore")
+    public String findBookStore(@RequestBody Book book,HttpSession session){
+        Integer bid = book.getBid();
+        User user = (User)session.getAttribute("user");
+        Integer uid = user.getUid();
+        BookStore bookStore = bookService.findBookStore(uid, bid);
+        if (bookStore!=null){
+            return "已购买";
+        }
+        return "未购买";
+
+    }
+
     //根据uid查出加入书架的书，需要登录信息
     @RequestMapping(value = "/findCollect")
     public List<Book> findCollectBook(HttpSession session){
@@ -193,11 +220,15 @@ public class UsersController {
     //充值会员
     //vip状态：0 无会员 1 一个月     2 三个月   3 六个月 4 12个月
     @RequestMapping("/Vip")
-    public User setVid(HttpSession session){
+    public User setVid(@RequestBody User users, HttpSession session){
+//        System.out.println(users);
+
         User user = (User)session.getAttribute("user");
-        Integer uvip = user.getUvip();
+//        System.out.println(user);
+        Integer uvip = users.getUvip();
+        System.out.println(uvip);
         int d=0;
-        if(uvip==0) {
+        if(uvip.equals(0)) {
             user.setUvip(uvip);
             BigDecimal bigDecimal1 = new BigDecimal("9");
             BigDecimal bigDecimal2 = new BigDecimal("25");
@@ -233,6 +264,9 @@ public class UsersController {
             rightNow.add(Calendar.MONTH,d);
             Date dt1=rightNow.getTime();
             user.setUexptime(dt1);
+            usersRepository.saveAndFlush(user);
+            session.setAttribute("user",user);
+            return user;
         } else {
             if (uvip> user.getUvip()){
                 user.setUvip(uvip);
@@ -262,17 +296,20 @@ public class UsersController {
                 d=12;
             }
 
-    }
+        }
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         Calendar rightNow = Calendar.getInstance();
         Date uvipdate = user.getUexptime();
         rightNow.setTime(uvipdate);
         rightNow.add(Calendar.MONTH,d);
         Date dt1=rightNow.getTime();
+        System.out.println(d);
+        System.out.println(dt1);
         String reStr = sdf.format(dt1);
         System.out.println(reStr);
         user.setUexptime(dt1);
         usersRepository.saveAndFlush(user);
+        session.setAttribute("user",user);
         return user;
     }
 //废弃不用了
@@ -306,9 +343,9 @@ public class UsersController {
 //    }
     //个人修改信息
     @RequestMapping("/updateUser")
-    public String updateUser(@RequestBody User user){
+    public String updateUser(@RequestBody User user,HttpSession session){
         usersService.updateUsers(user);
-
+        session.setAttribute("user",user);
         return "OK";
     }
     //上传头像

@@ -77,4 +77,8 @@
   <select id="findCollectCount" resultType="java.lang.Integer">
     select count(bid) from paid where paid.uid=#{uid}
   </select>
+
+  <select id="findCollect" resultMap="BaseResultMap">
+    select pid from paid where paid.uid=#{uid} and paid.bid=#{bid}
+  </select>
 </mapper>

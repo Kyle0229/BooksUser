@@ -133,6 +133,7 @@ public class BookController {
         }
         return bookList;
     }
+    //添加推荐
     @RequestMapping(value = "/addSelection",method = RequestMethod.POST)
     public String addSelection(@RequestBody Book book){
         Integer bid = book.getBid();
@@ -204,7 +205,7 @@ public class BookController {
         }
         return bookDownList;
     }
-
+    //取消推荐书籍
     @RequestMapping("/deleteSelection")
     public String deleteSelection(@RequestBody Book book){
         Integer bid = book.getBid();
@@ -213,6 +214,12 @@ public class BookController {
         selectionRepository.deleteById(sid1);
         return "成功取消";
     }
-
+    //下架书籍
+    @RequestMapping("/deleteBook")
+    public String deleteBook(@RequestBody Book book){
+        Integer bid = book.getBid();
+        bookRepository.deleteById(bid);
+        return "下架成功";
+    }
 
 }

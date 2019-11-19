@@ -1,11 +1,7 @@
 package com.kyle.service.impl;
 
-import com.kyle.domain.Chapter;
-import com.kyle.mapper.AuthorMapper;
-import com.kyle.mapper.BookMapper;
-import com.kyle.mapper.BookRepository;
-import com.kyle.domain.Author;
-import com.kyle.domain.Book;
+import com.kyle.domain.*;
+import com.kyle.mapper.*;
 import com.kyle.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -26,6 +22,10 @@ public class BookServiceImpl implements BookService {
     private AuthorMapper authorMapper;
     @Resource
     private RedisTemplate<String ,Object> redisTemplate;
+    @Resource
+    private PaidMapper paidMapper;
+    @Resource
+    private BookstoreMapper bookstoreMapper;
     @Override
     public String saveBook(Book book) {
         Book save = bookRepository.save(book);
@@ -170,5 +170,18 @@ public class BookServiceImpl implements BookService {
         List<Book> man = bookMapper.findMan();
         redisTemplate.opsForValue().set("findMan",man,30,TimeUnit.MINUTES);
         return man;
+    }
+
+    @Override
+    public Paid findCollect(Integer uid, Integer bid) {
+        Paid collect = paidMapper.findCollect(uid, bid);
+        return collect;
+
+    }
+
+    @Override
+    public BookStore findBookStore(Integer uid, Integer bid) {
+        BookStore bookStore = bookstoreMapper.findBookStore(uid, bid);
+        return bookStore;
     }
 }

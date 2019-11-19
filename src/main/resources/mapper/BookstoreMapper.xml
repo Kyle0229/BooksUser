@@ -75,4 +75,8 @@
     where
       bookstore.uid=#{uid} and bookstore.bid=book.bid
   </select>
+
+  <select id="findBookStore" resultMap="BaseResultMap">
+    select bsid from bookstore where  uid=#{uid} and bid=#{bid}
+  </select>
 </mapper>
