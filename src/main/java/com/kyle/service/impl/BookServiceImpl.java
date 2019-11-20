@@ -88,13 +88,13 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List findBookChapter(Integer bid) {
-        Object findBookChapter = redisTemplate.opsForValue().get("findBookChapter");
-        if (findBookChapter!=null){
-            System.out.println("redis查询findBookChapter");
-            return (List)findBookChapter;
-        }
+//        Object findBookChapter = redisTemplate.opsForValue().get("findBookChapter");
+//        if (findBookChapter!=null){
+//            System.out.println("redis查询findBookChapter");
+//            return (List)findBookChapter;
+//        }
         List<Chapter> bookChapter = bookMapper.findBookChapter(bid);
-            redisTemplate.opsForValue().set("findBookChapter",bookChapter,10,TimeUnit.MINUTES);
+//            redisTemplate.opsForValue().set("findBookChapter",bookChapter,10,TimeUnit.MINUTES);
         return bookChapter;
     }
 

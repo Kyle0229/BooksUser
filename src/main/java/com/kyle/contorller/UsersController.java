@@ -1,11 +1,9 @@
 package com.kyle.contorller;
 
+import com.kyle.Request.BookDown;
 import com.kyle.Request.BookMoney;
 import com.kyle.domain.*;
-import com.kyle.mapper.AuthorRepository;
-import com.kyle.mapper.BookRepository;
-import com.kyle.mapper.BookStoreRepository;
-import com.kyle.mapper.UsersRepository;
+import com.kyle.mapper.*;
 import com.kyle.domain.BookStore;
 import com.kyle.service.BookService;
 import com.kyle.service.BookStoreService;
@@ -36,7 +34,7 @@ public class UsersController {
     @Autowired
     private UsersRepository usersRepository;
     @Autowired
-    private BookStoreRepository bookStoreRepository;
+    private PaidRepository paidRepository;
     @Resource
     private UsersService usersService;
     @Resource
@@ -80,42 +78,49 @@ public class UsersController {
     public String saveBookStore(@RequestBody Book book,HttpSession session){
         User user = (User)session.getAttribute("user");
         BigDecimal bprice = book.getBprice();
-        //给书的收入加钱
-        BigDecimal nummoney = book.getNummoney();
-        BigDecimal add = nummoney.add(bprice);
-        book.setNummoney(add);
-        bookRepository.saveAndFlush(book);
-        //根据书id查出作者id
-        Integer aid = book.getAid();
-        Author bookAuthor = bookService.findBookAuthor(aid);
-        BigDecimal awallet = bookAuthor.getAwallet();
-        //给作者加钱
-        BigDecimal add1 = awallet.add(bprice);
-        bookAuthor.setAwallet(add1);
-        authorRepository.save(bookAuthor);
-        //给用户减钱
-        //判断是否有vip，如果有乘0.8
-        BigDecimal ucoin = user.getUcoin();
-        if (user.getUvip()!=0){
-            BigDecimal a =null;
-            Integer faultRate = 8;
-            a = BigDecimal.valueOf(faultRate.doubleValue()/10);
-            
-            BigDecimal multiply = bprice.multiply(a);
-            BigDecimal subtract = ucoin.subtract(bprice);
-            user.setUcoin(subtract);
-            usersRepository.saveAndFlush(user);
+        //判断用户余额是否足购
+        if (user.getUcoin().compareTo(bprice)==1){
+//给书的收入加钱
+            BigDecimal nummoney = book.getNummoney();
+            BigDecimal add = nummoney.add(bprice);
+            book.setNummoney(add);
+            bookRepository.saveAndFlush(book);
+            //根据书id查出作者id
+            Integer aid = book.getAid();
+            Author bookAuthor = bookService.findBookAuthor(aid);
+            BigDecimal awallet = bookAuthor.getAwallet();
+            //给作者加钱
+            BigDecimal add1 = awallet.add(bprice);
+            bookAuthor.setAwallet(add1);
+            authorRepository.save(bookAuthor);
+            //给用户减钱
+            //判断是否有vip，如果有乘0.8
+            BigDecimal ucoin = user.getUcoin();
+            if (user.getUvip()!=0){
+                BigDecimal a =null;
+                Integer faultRate = 8;
+                a = BigDecimal.valueOf(faultRate.doubleValue()/10);
+
+                BigDecimal multiply = bprice.multiply(a);
+                BigDecimal subtract = ucoin.subtract(bprice);
+                user.setUcoin(subtract);
+                usersRepository.saveAndFlush(user);
+            }else {
+                BigDecimal subtract = ucoin.subtract(bprice);
+                user.setUcoin(subtract);
+                usersRepository.saveAndFlush(user);
+            }
+
+            Integer uid = user.getUid();
+            Integer bid = book.getBid();
+            bookStoreService.saveBook(uid,bid);
+            return "购买成功";
         }else {
-            BigDecimal subtract = ucoin.subtract(bprice);
-            user.setUcoin(subtract);
-            usersRepository.saveAndFlush(user);
+            return "余额不足";
         }
 
-        Integer uid = user.getUid();
-        Integer bid = book.getBid();
-       bookStoreService.saveBook(uid,bid);
 
-        return "购买成功";
+
     }
     //需要用户登录信息
     //根据uid查出已购买的书
@@ -185,48 +190,70 @@ public class UsersController {
         Integer collectCount = usersService.findCollectCount(uid);
         return collectCount;
     }
+    //用户删除书架里的书
+    @RequestMapping("/deleteCollect")
+    public String deleteCollect(@RequestBody Book  book,HttpSession session){
+        User user = (User)session.getAttribute("user");
+        Integer uid = user.getUid();
+        Integer bid = book.getBid();
+        Paid collect = bookService.findCollect(uid, bid);
+        paidRepository.deleteById(collect.getPid());
+
+        return "删除成功";
+    }
     //打赏
     //需要登录信息，用户的钱包减去money
     @RequestMapping(value = "/giveMoney",method = RequestMethod.POST)
     public String giveMoney(@RequestBody BookMoney bookMoney, HttpSession session){
         User user = (User)session.getAttribute("user");
-        BigDecimal money = bookMoney.getMoney();
-        Book book = bookMoney.getBook();
+            BigDecimal money=bookMoney.getMoney();
+            Book book=bookMoney.getBook();
         BigDecimal ucoin = user.getUcoin();
-        //用户减钱并保存
-        BigDecimal subtract = ucoin.subtract(money);
-        user.setUcoin(subtract);
-        usersRepository.save(user);
-        //书字段加钱并保存
-        BigDecimal nummoney = book.getNummoney();
-        BigDecimal money1 = nummoney.add(money);
-        book.setNummoney(money1);
-        bookRepository.save(book);
-        //根据书id查出作者id
-        Integer aid = book.getAid();
-        Author bookAuthor = bookService.findBookAuthor(aid);
-        BigDecimal awallet = bookAuthor.getAwallet();
-        //给作者加钱
-        BigDecimal add = awallet.add(money);
-        bookAuthor.setAwallet(add);
-        authorRepository.save(bookAuthor);
+        if (ucoin.compareTo(money)==1){
+            //用户减钱并保存
+            BigDecimal subtract = ucoin.subtract(money);
+            user.setUcoin(subtract);
+            usersRepository.save(user);
+            session.setAttribute("user",user);
+            //书字段加钱并保存
+            BigDecimal nummoney = book.getNummoney();
+            BigDecimal money1 = nummoney.add(money);
+            book.setNummoney(money1);
+            bookRepository.save(book);
+//        //根据书id查出作者id
+            Integer aid = book.getAid();
+            Author bookAuthor = bookService.findBookAuthor(aid);
+            BigDecimal awallet = bookAuthor.getAwallet();
+//        //给作者加钱
+            BigDecimal add = awallet.add(money);
+            bookAuthor.setAwallet(add);
+            authorRepository.save(bookAuthor);
 
-        return "成功打赏";
+            return "成功打赏";
+        }
+        return "余额不足";
     }
     //投票  需要用户信息
     @RequestMapping("/giveUticket")
     public String giveUticket(@RequestBody Book book,HttpSession session){
         Integer btickets = book.getBtickets();
-        btickets++;
+        btickets= btickets+1;
         book.setBtickets(btickets);
         bookRepository.save(book);
         System.out.println(btickets);
         User user = (User)session.getAttribute("user");
         Integer uticket = user.getUticket();
-        Integer integer = uticket--;
-        user.setUticket(integer);
+        if (uticket==0){
+            System.out.println("没票了");
+            return "error";
+        }
+        System.out.println(uticket);
+        uticket = uticket-1;
+        System.out.println(uticket);
+        user.setUticket(uticket);
         //需要用户信息,用户的ticket字段减一
         usersRepository.save(user);
+        session.setAttribute("user",user);
         //用户模块没写
         return "成功";
     }

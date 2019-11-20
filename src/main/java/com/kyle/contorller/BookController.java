@@ -19,9 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -284,4 +283,33 @@ public class BookController {
         Separater separater=new Separater();
         separater.save();
     }
+
+
+//    // 在线打开方式 下载
+//    @RequestMapping("/down")
+//    public void downLoad(HttpServletResponse response) throws Exception {
+//        System.out.println(1111111);
+//        File f = new File("http://q04351w6a.bkt.clouddn.com/%E5%9C%A3%E5%A2%9F.txt");
+//
+//        OutputStream out = response.getOutputStream();
+//        if (!f.exists()) {
+//            response.setCharacterEncoding("UTF-8");
+////            String notFileHtml=getNotFileHtml(filePath,"文件找不到");
+////            out.write(notFileHtml.getBytes("UTF-8"));
+////            out.flush();
+//            return;
+//        }
+//        System.out.println(f);
+//        BufferedInputStream br = new BufferedInputStream(new FileInputStream(f));
+//        byte[] buf = new byte[1024];
+//        int len = 0;
+//        response.reset(); // 非常重要
+//        response.setContentType("application/x-msdownload");
+//        response.setHeader("Content-Disposition", "attachment; filename=" + "圣墟.txt");
+//
+//        while ((len = br.read(buf)) > 0)
+//            out.write(buf, 0, len);
+//        br.close();
+//        out.close();
+//    }
 }
