@@ -141,47 +141,47 @@
   </update>
   
   <select id="findScount" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List" /> from book order by scount desc
+    select <include refid="Base_Column_List" /> from book where bstatus=1 order by scount desc
   </select>
 
   <select id="findNumMoney" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List" /> from book order by nummoney desc
+    select <include refid="Base_Column_List" /> from book where bstatus=1  order by nummoney desc
   </select>
 
   <select id="findAscMoney" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List" /> from book order by nummoney asc
+    select <include refid="Base_Column_List" /> from book where bstatus=1  order by nummoney asc
   </select>
 
   <select id="findBtickets" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List" /> from book order by btickets desc
+    select <include refid="Base_Column_List" /> from book where bstatus=1  order by btickets desc
   </select>
   
   <select id="findBookChapter" resultType="com.kyle.domain.Chapter">
-    select chid,bid,chnane,number  from chapter where bid=#{bid}
+    select chid,bid,chnane,number  from chapter where bid=#{bid} and bstatus=1
   </select>
 
   <select id="findBookContent" resultType="java.lang.String">
-    select content from  chapter where chid=#{chid}
+    select content from  chapter where chid=#{chid} and bstatus=1
   </select>
 
   <select id="findCatalog" resultType="com.kyle.domain.Book">
-    select <include refid="Base_Column_List" /> from book where book.cid=#{cid}
+    select <include refid="Base_Column_List" /> from book where book.cid=#{cid} and bstatus=1
   </select>
 
   <select id="findBookCatalog" resultType="java.lang.String">
-    select cname from catalog where cid=#{cid}
+    select cname from catalog where cid=#{cid} and bstatus=1
   </select>
 
   <select id="findNewBook" resultType="com.kyle.domain.Book">
-    select <include refid="Base_Column_List" /> from book order by bid desc
+    select <include refid="Base_Column_List" /> from book where bstatus=1 order by bid desc
   </select>
   
   <select id="findRomantic" resultType="com.kyle.domain.Book">
-    select  <include refid="Base_Column_List" /> from book where cid=11 order by rand()
+    select  <include refid="Base_Column_List" /> from book where cid=11 and bstatus=1  order by rand()
   </select>
   
   <select id="findMan" resultType="com.kyle.domain.Book">
-    select  <include refid="Base_Column_List" /> from book where cid =1 order by rand()
+    select  <include refid="Base_Column_List" /> from book where cid =1 and bstatus=1  order by rand()
   </select>
 
   <select id="findSelectionId" resultType="com.kyle.domain.Selection">
